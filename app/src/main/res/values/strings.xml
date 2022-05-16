@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">PedraPapelTesoura</string>
+    <string-array name="qtdd_adversarios">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string name="vitoria"><b>Vitoria</b></string>
+    <string name="empate"><b>Empate</b></string>
+    <string name="derrota"><b>Derrota</b></string>
+</resources>
