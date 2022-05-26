@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import denilson.learn.pedrapapeltesoura.DAO.ConfigSQLite
 import denilson.learn.pedrapapeltesoura.databinding.ActivityMainBinding
 import denilson.learn.pedrapapeltesoura.model.Configuracao
 import denilson.learn.pedrapapeltesoura.model.Jogada
@@ -30,14 +31,24 @@ class MainActivity : AppCompatActivity() {
     private lateinit var jogadaUsuario: Jogada
     private lateinit var jogador1: Jogada
     private var jogador2: Jogada? = null
-    private var configuracao: Configuracao = Configuracao()
-
+    private lateinit var configuracao: Configuracao
     private lateinit var configActivityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var dbConfiguracao: ConfigSQLite
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        dbConfiguracao = ConfigSQLite(this)
+
+        val configAtual = dbConfiguracao.getConfig()
+
+        //se a configuracao nao for encontrada, é aplicada a padrao e salva no db
+        configuracao = configAtual?: Configuracao()
+        if(configAtual == null){
+            dbConfiguracao.adicionarConfig(configuracao)
+        }
 
         supportActionBar?.title = "Jokenpo"
         geradorRandom = Random(System.currentTimeMillis())
@@ -62,6 +73,7 @@ class MainActivity : AppCompatActivity() {
                 val novaConfig = result.data?.getParcelableExtra<Configuracao>(Intent.EXTRA_USER)
                 if(novaConfig?.numeroAdversarios!! == 2 || novaConfig.numeroAdversarios == 1){
                     configuracao = novaConfig
+                    dbConfiguracao.alterarConfig(configuracao)
                     resetaTextosJogadas()
                     destacarBotao(arrayOf(btn_papel, btn_pedra, btn_tesoura))
                     Toast.makeText(this, "Configuração atualizada!", Toast.LENGTH_SHORT).show()

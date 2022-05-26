@@ -5,5 +5,5 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Configuracao (
-    val numeroAdversarios: Int = 1,
+    var numeroAdversarios: Int = 1,
 ) : Parcelable
