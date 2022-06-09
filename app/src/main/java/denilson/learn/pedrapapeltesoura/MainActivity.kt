@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btn_pedra: ImageView
     private lateinit var btn_papel: ImageView
     private lateinit var btn_tesoura: ImageView
+    private lateinit var tvAdversarios: TextView
 
     private lateinit var geradorRandom : Random
     private lateinit var jogadaUsuario: Jogada
@@ -56,6 +58,9 @@ class MainActivity : AppCompatActivity() {
         btn_pedra = findViewById(R.id.PedraBtn)
         btn_papel = findViewById(R.id.PapelBtn)
         btn_tesoura = findViewById(R.id.TesouraBtn)
+        tvAdversarios = findViewById(R.id.qtddAdversarios)
+
+        tvAdversarios.text = "Quantidade de adversários: "+ configuracao.numeroAdversarios
 
         activityMainBinding.jogarBtn.setOnClickListener {
             geraJogadasAdversarias()
@@ -88,6 +93,7 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding.jogadaJogador2.visibility = View.GONE
         activityMainBinding.jogarBtn.isEnabled = false
         activityMainBinding.resultadoTv.text = ""
+        tvAdversarios.text = "Quantidade de adversários: "+ configuracao.numeroAdversarios
     }
 
     private fun verificaResultado(): String {
